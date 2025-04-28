@@ -82,6 +82,38 @@ class SoapWalletController extends Controller
 
     // Metodo consultar pagar
 
+    public function pagar($documento, $celular, $monto)
+    {
+        try {
+            $cliente = Cliente::where('documento', $documento)
+                ->where('celular', $celular)
+                ->first();
+
+            if (!$cliente) {
+                return "Cliente no encontrado.";
+            }
+
+            if ($cliente->saldo < $monto) {
+                return "Saldo insuficiente.";
+            }
+
+            // Token de 6 dígitos
+            $token = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+            $pagoPendiente = \App\Models\PagoPendiente::create([
+                'cliente_id' => $cliente->id,
+                'monto' => $monto,
+                'token' => $token,
+            ]);
+
+
+            return "Se ha generado un token: {$token}. ID de sesión: {$pagoPendiente->id}";
+        } catch (\Exception $e) {
+            return "Error al iniciar pago: " . $e->getMessage();
+        }
+    }
+
+
     // Metodo consultar confirmar pago
 
 }
