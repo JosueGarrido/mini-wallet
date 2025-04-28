@@ -26,14 +26,6 @@ function Registro() {
       });
     }
   };
-
-  const openNotification = () => {
-    notification.success({
-      message: 'Test',
-      description: 'Notificación de prueba funcionando',
-      placement: 'topRight',
-    });
-  };
   
 
   return (
@@ -58,12 +50,6 @@ function Registro() {
           </Button>
         </Form.Item>
       </Form>
-
-      <div style={{ padding: '2rem' }}>
-      <Button type="primary" onClick={openNotification}>
-        Probar Notificación
-      </Button>
-      </div>
     </div>
   );
 }
