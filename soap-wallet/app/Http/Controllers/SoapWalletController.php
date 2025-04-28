@@ -60,8 +60,28 @@ class SoapWalletController extends Controller
 
     // Metodo consultar recargar saldo
 
+    public function recargarSaldo($documento, $celular, $valor)
+    {
+        try {
+            $cliente = Cliente::where('documento', $documento)
+                ->where('celular', $celular)
+                ->first();
+
+            if (!$cliente) {
+                return "Cliente no encontrado.";
+            }
+
+            $cliente->saldo += $valor;
+            $cliente->save();
+
+            return "Saldo recargado exitosamente. Nuevo saldo: " . $cliente->saldo;
+        } catch (\Exception $e) {
+            return "Error al recargar saldo: " . $e->getMessage();
+        }
+    }
+
     // Metodo consultar pagar
 
     // Metodo consultar confirmar pago
-    
+
 }
