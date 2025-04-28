@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, InputNumber, Button, message } from 'antd';
+import { Form, Input, InputNumber, Button, notification } from 'antd';
 
 function Pagar() {
   const [form] = Form.useForm();
@@ -12,10 +12,16 @@ function Pagar() {
         body: JSON.stringify(values),
       });
       const data = await res.json();
-      message.success(data.message);
+      notification.success({
+        message: 'Éxito',
+        description: data.message,
+      });
       form.resetFields();
     } catch (error) {
-      message.error('Error al iniciar pago');
+        notification.error({
+            message: 'Error',
+            description: 'Ocurrió un error, por favor intenta más tarde',
+        });
     }
   };
 

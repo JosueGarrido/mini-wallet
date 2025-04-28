@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
 
 function Registro() {
   const [form] = Form.useForm();
@@ -12,12 +12,29 @@ function Registro() {
         body: JSON.stringify(values),
       });
       const data = await res.json();
-      message.success(data.message);
+      notification.success({
+        message: 'Éxito',
+        description: data.message,
+        placement: 'topRight',
+      });
       form.resetFields();
     } catch (error) {
-      message.error('Error al registrar cliente');
+      notification.error({
+        message: 'Error',
+        description: 'Ocurrió un error, por favor intenta más tarde',
+        placement: 'topRight',
+      });
     }
   };
+
+  const openNotification = () => {
+    notification.success({
+      message: 'Test',
+      description: 'Notificación de prueba funcionando',
+      placement: 'topRight',
+    });
+  };
+  
 
   return (
     <div style={{ maxWidth: 400, margin: 'auto', padding: '2rem' }}>
@@ -41,6 +58,12 @@ function Registro() {
           </Button>
         </Form.Item>
       </Form>
+
+      <div style={{ padding: '2rem' }}>
+      <Button type="primary" onClick={openNotification}>
+        Probar Notificación
+      </Button>
+      </div>
     </div>
   );
 }

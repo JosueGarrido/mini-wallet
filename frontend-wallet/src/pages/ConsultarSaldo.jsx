@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, notification } from 'antd';
 
 function ConsultarSaldo() {
   const [form] = Form.useForm();
@@ -12,7 +12,10 @@ function ConsultarSaldo() {
       const data = await res.json();
       setSaldo(data.message);
     } catch (error) {
-      message.error('Error al consultar saldo');
+        notification.error({
+            message: 'Error',
+            description: 'Ocurrió un error, por favor intenta más tarde',
+        });
     }
   };
 
