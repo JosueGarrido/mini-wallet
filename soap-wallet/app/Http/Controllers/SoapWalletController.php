@@ -117,5 +117,39 @@ class SoapWalletController extends Controller
 
 
     // Metodo consultar confirmar pago
+    public function confirmarPago($session_id, $token)
+    {
+        try {
+            $pagoPendiente = \App\Models\PagoPendiente::find($session_id);
+
+            if (!$pagoPendiente) {
+                return "No se encontró la sesión de pago.";
+            }
+
+            if ($pagoPendiente->token !== $token) {
+                return "Token incorrecto.";
+            }
+
+            $cliente = Cliente::find($pagoPendiente->cliente_id);
+
+            if (!$cliente) {
+                return "Cliente no encontrado.";
+            }
+
+            if ($cliente->saldo < $pagoPendiente->monto) {
+                return "Saldo insuficiente para confirmar pago.";
+            }
+
+            $cliente->saldo -= $pagoPendiente->monto;
+            $cliente->save();
+
+            $pagoPendiente->delete(); // Eliminar el registro del pago pendiente
+
+            return "Pago confirmado exitosamente. Saldo actual: " . $cliente->saldo;
+        } catch (\Exception $e) {
+            return "Error al confirmar pago: " . $e->getMessage();
+        }
+    }
+
 
 }
