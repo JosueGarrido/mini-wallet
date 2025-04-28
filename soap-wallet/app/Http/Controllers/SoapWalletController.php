@@ -47,18 +47,23 @@ class SoapWalletController extends Controller
     // Metodo consultar saldo
     public function consultarSaldo($documento, $celular)
     {
-        $cliente = Cliente::where('documento', $documento)
-            ->where('celular', $celular)
-            ->first();
+        try {
+            $cliente = Cliente::where('documento', $documento)
+                ->where('celular', $celular)
+                ->first();
 
-        if (!$cliente) {
-            return "Cliente no encontrado.";
+            if (!$cliente) {
+                return "Cliente no encontrado.";
+            }
+
+            return "Saldo actual: " . $cliente->saldo;
+        } catch (\Exception $e) {
+            return "Error al consultar saldo: " . $e->getMessage();
         }
-
-        return "Saldo actual: " . $cliente->saldo;
     }
 
-    // Metodo consultar recargar saldo
+
+    // Metodo recargar saldo
 
     public function recargarSaldo($documento, $celular, $valor)
     {
@@ -80,7 +85,7 @@ class SoapWalletController extends Controller
         }
     }
 
-    // Metodo consultar pagar
+    // Metodo pagar
 
     public function pagar($documento, $celular, $monto)
     {
@@ -116,7 +121,7 @@ class SoapWalletController extends Controller
     }
 
 
-    // Metodo consultar confirmar pago
+    // Metodo confirmar pago
     public function confirmarPago($session_id, $token)
     {
         try {
