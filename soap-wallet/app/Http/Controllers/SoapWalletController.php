@@ -106,8 +106,10 @@ class SoapWalletController extends Controller
                 'token' => $token,
             ]);
 
+            // Envió de correo
+            \Mail::to($cliente->email)->send(new \App\Mail\TokenDePago($token));
 
-            return "Se ha generado un token: {$token}. ID de sesión: {$pagoPendiente->id}";
+            return "Se ha generado un token y enviado al correo. ID de sesión: {$pagoPendiente->id}";
         } catch (\Exception $e) {
             return "Error al iniciar pago: " . $e->getMessage();
         }
