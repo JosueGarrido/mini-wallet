@@ -13,9 +13,14 @@
 |
 */
 
+$router->options('/{any:.*}', function() {
+    return response('OK', 200);
+});
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
 $router->post('/api/registro', 'ApiController@registro');
 $router->post('/api/recargar', 'ApiController@recargar');
 $router->post('/api/pagar', 'ApiController@pagar');

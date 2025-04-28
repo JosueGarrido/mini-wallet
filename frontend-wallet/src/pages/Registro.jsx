@@ -1,0 +1,48 @@
+import React, { useState } from 'react';
+import { Form, Input, Button, message } from 'antd';
+
+function Registro() {
+  const [form] = Form.useForm();
+
+  const onFinish = async (values) => {
+    try {
+      const res = await fetch('http://localhost:8001/api/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      message.success(data.message);
+      form.resetFields();
+    } catch (error) {
+      message.error('Error al registrar cliente');
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: 400, margin: 'auto', padding: '2rem' }}>
+      <h1 style={{ textAlign: 'center' }}>Registro de Cliente</h1>
+      <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form.Item name="documento" label="Documento" rules={[{ required: true, message: 'Ingrese el documento' }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="nombres" label="Nombres" rules={[{ required: true, message: 'Ingrese los nombres' }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Ingrese el email' }]}>
+          <Input type="email" />
+        </Form.Item>
+        <Form.Item name="celular" label="Celular" rules={[{ required: true, message: 'Ingrese el celular' }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            Registrar
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  );
+}
+
+export default Registro;
